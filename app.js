@@ -5,28 +5,26 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/rotten-potatoes', { useMongoClient: true });
 
 const Review = mongoose.model('Review', {
-  title: String
+  title: String,
+  description: String,
+  movieTitle: String
 });
+
+// INITIALIZE BODY-PARSER AND ADD IT TO APP
+const bodyParser = require('body-parser');
+
+// The following line must appear AFTER const app = express() and before your routes!
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 var exphbs = require('express-handlebars');
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
-//
-// app.get('/', (req, res) => {
-//     res.render('home', { msg: 'Hello World!' });
-// })
 
 app.listen(3000, () => {
   console.log('App listening on port 3000!')
 })
-
-// // OUR MOCK ARRAY OF PROJECTS
-// let reviews = [
-//   { title: "First Review" },
-//   { title: "Next Review" }
-// ]
-
 
 // INDEX
 app.get('/', (req, res) => {
@@ -39,6 +37,17 @@ app.get('/', (req, res) => {
     })
 })
 
-Reviews.find().then((review) => {
-  // Code in here is executed when the promise resolves
+// NEW
+app.get('/reviews/new', (req, res) => {
+  res.render('reviews-new', {});
+})
+
+// CREATE
+app.post('/reviews', (req, res) => {
+  Review.create(req.body).then((review) => {
+    console.log(review);
+    res.redirect('/');
+  }).catch((err) => {
+    console.log(err.message);
+  })
 })
