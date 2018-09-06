@@ -38,3 +38,7 @@ app.get('/', (req, res) => {
       console.log(err);
     })
 })
+
+Reviews.find().then((review) => {
+  // Code in here is executed when the promise resolves
+})
