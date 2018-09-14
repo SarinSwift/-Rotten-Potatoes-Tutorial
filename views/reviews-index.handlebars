@@ -1,10 +1,7 @@
-<!-- views/reviews-index.handlebars -->
+<!-- views/reviews-show.handlebars -->
 
-<h1>Reviews</h1>
+<a href="/">Back to Home</a>
 
-<a href="/reviews/new">New Review</a>
-
-{{#each reviews}}
-  <h2>{{this.title}}</h2>
-  <small>{{this.movieTitle}}</small>
-{{/each}}
+<h1>{{review.title}}</h1>
+<h5>{{review.movieTitle}}</h5>
+<p>{{review.description}}</p>
