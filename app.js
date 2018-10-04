@@ -5,20 +5,14 @@ const app = express()
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/rotten-potatoes', { useMongoClient: true });
 
-const Review = mongoose.model('Review', {
-  title: String,
-  description: String,
-  movieTitle: String,
-  rating: Number
-});
+const Review = require("./models/review")
 
 // INITIALIZE BODY-PARSER AND ADD IT TO APP
 const bodyParser = require('body-parser');
 
-
 // The following line must appear AFTER const app = express() and before your routes!
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(methodOverride('_method'));
 
 var exphbs = require('express-handlebars');
 
@@ -63,7 +57,7 @@ app.get('/reviews/:id', (req, res) => {
 })
 
 // EDIT
-app.get('/reviews/:id/edit', (req, res) => {
+app.get('/reviews/:id/edit', function (req, res) {
   Review.findById(req.params.id, function(err, review) {
     res.render('reviews-edit', {review: review});
   })
@@ -90,6 +84,12 @@ app.delete('/reviews/:id', function (req, res) {
   })
 })
 
+var reviewRoutes = require('./controllers/reviews');
+reviewRoutes(app, Review);
+
+
 app.listen(3000, () => {
   console.log('App listening on port 3000!')
 })
+
+module.exports = app;
