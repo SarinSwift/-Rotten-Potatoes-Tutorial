@@ -3,6 +3,8 @@ const methodOverride = require('method-override')
 const app = express()
 const port = process.env.PORT || 3000;
 
+
+
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/rotten-potatoes');
 
@@ -10,6 +12,7 @@ const Review = require("./models/review")
 
 // INITIALIZE BODY-PARSER AND ADD IT TO APP
 const bodyParser = require('body-parser');
+
 
 // The following line must appear AFTER const app = express() and before your routes!
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -86,7 +89,10 @@ app.delete('/reviews/:id', function (req, res) {
 })
 
 var reviewRoutes = require('./controllers/reviews');
+var commentRoutes = require('./controllers/comments');
+
 reviewRoutes(app, Review);
+commentRoutes(app);
 
 
 app.listen(port);
