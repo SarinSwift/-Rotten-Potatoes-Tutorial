@@ -1,5 +1,3 @@
-<!-- views/reviews-show.handlebars -->
-
 <a href="/">Back to Home</a>
 <div class="row">
   <div class="col-sm-6 col-sm-offset-3">
@@ -10,5 +8,11 @@
     <p><form method="POST" action="/reviews/{{review._id}}?_method=DELETE">
         <button class="btn btn-primary" type="submit">Delete</button>
     </form></p>
+
+    <hr>
+
+    <!-- Comment form -->
+    {{> comment-form}}
+
   </div>
 </div>
