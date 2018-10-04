@@ -11,7 +11,9 @@
  <h1>Reviews</h1>
  <a href="/reviews/new">New Review</a>
 
-{{#each reviews}}
-    <h2><a href="/reviews/{{this.id}}">{{this.title}}</a></h2>
-    <small>{{this.movieTitle}}</small>
-{{/each}}
+ <div class="row">
+    {{#each reviews}}
+        <h2><a href="/reviews/{{this.id}}">{{this.title}}</a></h2>
+        <small>{{this.movieTitle}}</small>
+    {{/each}}
+</div>
