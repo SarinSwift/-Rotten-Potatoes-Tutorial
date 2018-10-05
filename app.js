@@ -2,11 +2,12 @@ const express = require('express')
 const methodOverride = require('method-override')
 const app = express()
 const port = process.env.PORT || 3000;
-
-
-
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/rotten-potatoes');
+
+
+
+const Comment = require('./models/comment')
 
 const Review = require("./models/review")
 
@@ -53,12 +54,18 @@ app.post('/reviews', (req, res) => {
 
 // SHOW
 app.get('/reviews/:id', (req, res) => {
-  Review.findById(req.params.id).then((review) => {
-    res.render('reviews-show', { review: review })
+  // find review
+  Review.findById(req.params.id).then(review => {
+    // fetch its comments
+    Comment.find({ reviewId: req.params.id }).then(comments => {
+      // respond with the template with both values
+      res.render('reviews-show', { review: review, comments: comments })
+    })
   }).catch((err) => {
-    console.log(err.message);
-  })
-})
+    // catch errors
+    console.log(err.message)
+  });
+});
 
 // EDIT
 app.get('/reviews/:id/edit', function (req, res) {
@@ -92,7 +99,7 @@ var reviewRoutes = require('./controllers/reviews');
 var commentRoutes = require('./controllers/comments');
 
 reviewRoutes(app, Review);
-commentRoutes(app);
+commentRoutes(app, Comment);
 
 
 app.listen(port);
